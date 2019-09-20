@@ -1,0 +1,151 @@
+/* ---------Projects 相关 API-------- */
+this.getProjects()
+
+def getProjects() {
+    println "--------------"
+    println "Root Project"
+    println "--------------"
+    this.getAllprojects().eachWithIndex { Project project, int index ->
+        if (index == 0) {
+            println "Root Project：${project.name}"
+        } else {
+            println "+--- Project：${project.name}"
+        }
+    }
+}
+
+//this.getParent()//获取父 Project
+//this.getRootProject()//获取根 Project
+
+//project("app") { Project project ->
+//    println project.name
+//    apply plugin: "com.android.application"
+//    group "com.jeanboy.app"
+//    dependencies {
+//
+//    }
+//    android {
+//
+//    }
+//}
+//配置当前节点工程和其 sub project 的所有 project
+allprojects {
+
+}
+
+//不包括当前节点工程，只包括它的 sub project
+subprojects {
+
+}
+
+////扩展属性
+//ext {
+//    aa "aa"
+//}
+////扩展属性使用
+//this.aa
+////在根工程中为每个子 project 定义 扩展属性
+//subprojects {
+//    ext {
+//        aa "aa"
+//    }
+//}
+/* ---------Projects 文件相关 API-------- */
+println getRootDir().absolutePath
+println getBuildDir().absolutePath
+println getProjectDir().absolutePath
+
+def file = file("相对于当前 Project 的路径")
+//拷贝文件
+copy {
+    from file("")
+    into getRootProject().getBuildDir()
+}
+//遍历文件树
+fileTree("") { FileTree fileTree ->
+    fileTree.visit { FileTreeElement element ->
+        println element.file.name
+    }
+}
+/* ---------Projects 依赖相关 API-------- */
+buildscript { ScriptHandler scriptHandler ->
+    //配置工程的仓库地址
+    scriptHandler.repositories { RepositoryHandler repositoryHandler ->
+        repositoryHandler.jcenter()
+        repositoryHandler.mavenCentral()
+    }
+    // 配置工程的插件地址
+    scriptHandler.dependencies {
+        classpath "com.android.tools.build:gradle:2.2.2"
+    }
+}
+
+/* ---------Task 依赖相关 API-------- */
+task helloTask {
+    println "I am helloTask"
+    doFirst {
+        println "======doFirst"
+    }
+    doLast {
+
+    }
+}
+helloTask.doFirst {
+
+}
+
+task task1 {
+    doFirst {
+        println "I am " + description
+    }
+}
+
+
+task task2 {
+    doFirst {
+        println "I am " + description
+    }
+}
+task task3(dependsOn: [task1, task2]) {
+    doFirst {
+        println "I am " + description
+    }
+}
+
+ext {
+    versionName = "1.0.0"
+    versionCode = "100"
+    versionInfo = "App的第一个版本"
+    deftFile = file("release.xml")
+    if (deftFile == null || !deftFile.exists()) {
+        deftFile.createNewFile()
+    }
+}
+task inputTask {
+    //为Task指定输入
+    inputs.property("versionName", this.versionName)
+    inputs.property("versionCode", this.versionCode)
+    inputs.property("versionInfo", this.versionInfo)
+
+    //为Task指定输出
+    outputs.file deftFile
+
+    doLast {
+        def data = inputs.getProperties()
+        File file1 = outputs.getFile().getSingleFile()
+    }
+}
+
+
+/* ---------Settings-------- */
+settings.gradle
+
+/* ---------SourceSet-------- */
+sourceSets {
+    main {
+        jniLibs.srcDirs = ["libs"] //修改so库的存放位置
+    }
+}
+
+
+/* ---------Plugin-------- */

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jeanboy.plugin.test'//使用自定义插件
 
 android {
     compileSdkVersion 29
@@ -17,7 +18,7 @@ android {
         }
     }
 }
-
+//为应用程序添加第三方依赖
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -25,4 +26,29 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+//task helloTask {
+//    println "I am helloTask"
+//}
+//
+//def startBuildTime, endBuildTime
+//this.afterEvaluate {
+//    //保证Task已经配置完毕
+//    def preBuildTask = project.tasks.getByName("preBuild")
+//    preBuildTask.doFirst {
+//        startBuildTime = System.currentTimeMillis()
+//        println "开始时间：" + startBuildTime
+//    }
+//    def buildTask = project.tasks.getByName("build")
+//    buildTask.doLast {
+//        endBuildTime = System.currentTimeMillis()
+//        println "结束时间：" + endBuildTime
+//    }
+//}
+
+myAppInfo {
+    versionCode = "100"
+    versionName = "1.0.0"
+    versionInfo = "第一个插件测试，哈哈"
+    fileName = "release.xml"
 }

@@ -1,2 +1,4 @@
-include ':app'
-rootProject.name='GradleTest'
+include ':app', ':buildSrc'
+rootProject.name = 'GradleTest'
+
+println "初始化阶段开始执行..."
