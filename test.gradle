@@ -149,3 +149,11 @@ sourceSets {
 
 
 /* ---------Plugin-------- */
+
+/* ---------Android 对 Gradle 的扩展-------- */
+android {
+
+}
+
+
+/* ---------Jenkins 安装使用-------- */
